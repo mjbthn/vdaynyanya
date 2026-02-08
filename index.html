@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>for nyanya</title>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Be My Valentine 💖</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .card {
+      background: white;
+      padding: 5%;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+      z-index: 10;
+    }
+
+    h1 {
+      color: #ff4d6d;
+      margin-bottom: 10px;
+      font-size: 1.6rem;
+    }
+
+    p {
+      color: #555;
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: nowrap;
+    }
+
+    button {
+      padding: 12px 25px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    #yesBtn {
+      background: #ff4d6d;
+      color: white;
+    }
+
+    #yesBtn:hover {
+      transform: scale(1.08);
+    }
+
+    #noBtn {
+      background: #e0e0e0;
+      color: #555;
+      cursor: not-allowed;
+      z-index: 9999;
+    }
+
+    .heart {
+      position: fixed;
+      top: -30px;
+      font-size: 22px;
+      animation: fall linear forwards;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.9;
+      transition: opacity 1s ease;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      padding: 10px;
+    }
+
+    .invite-card {
+      background: white;
+      padding: 5%;
+      border-radius: 25px;
+      text-align: center;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      animation: pop 0.4s ease;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .invite-card h2 {
+      color: #ff4d6d;
+      margin-bottom: 10px;
+      font-size: 1.4rem;
+    }
+
+    .invite-card p {
+      color: #444;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .close-btn {
+      margin-top: 15px;
+      background: #ff4d6d;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .card .tenor-gif-embed,
+    .invite-card .tenor-gif-embed {
+      width: 100% !important;
+      height: auto !important;
+      margin-bottom: 15px;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <div class="tenor-gif-embed" data-postid="13167946989452927941" data-share-method="host" data-aspect-ratio="1" data-width="100%"></div>
+
+    <h1>Will you be my Valentine? 💘</h1>
+    <p>Kahit saglit po, and I love to spend time with you.
+       So can I be your valentine? 👉👈</p>
+
+    <div class="button-row">
+      <button id="yesBtn">Yes 💖</button>
+      <button id="noBtn">No 😢</button>
+    </div>
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="invite-card">
+      <h1>Yey you’re my Valentine 💌</h1>
+
+      <div class="tenor-gif-embed" data-postid="2274914169349739859" data-share-method="host" data-aspect-ratio="1" data-width="150%"></div>
+
+      <p>
+        Hi nyanya^^ 💕<br><br>
+        You are officially invited to be my date!
+        I'll look forward to spending time with you po,
+        and even if little time is enough kasi kasama po kita thus to make you smile as much as I can!
+      </p>
+
+      <button class="close-btn" onclick="closePopup()">Okay 💖</button>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const popup = document.getElementById("popup");
+
+    let escaped = false;
+    let heartInterval = null;
+
+    noBtn.addEventListener("mouseenter", () => {
+      if (!escaped) {
+        escaped = true;
+        document.body.appendChild(noBtn);
+        noBtn.style.position = "fixed";
+      }
+      moveNoButton();
+    });
+
+    function moveNoButton() {
+      const padding = 20;
+      const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+      const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+      noBtn.style.left = Math.random() * maxX + "px";
+      noBtn.style.top = Math.random() * maxY + "px";
+    }
+
+    // ✅ CHANGE 1: hide No on Yes
+    yesBtn.addEventListener("click", () => {
+      noBtn.style.display = "none";
+      popup.style.display = "flex";
+
+      if (!heartInterval) {
+        heartInterval = setInterval(createHeart, 300);
+      }
+    });
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      const hearts = ["💖","💘","💗","💓"];
+      heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = Math.random() * 3 + 3 + "s";
+      heart.style.fontSize = Math.random() * 20 + 18 + "px";
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.style.opacity = 0;
+        setTimeout(() => heart.remove(), 1000);
+      }, 7000);
+    }
+
+    function closePopup() {
+      popup.style.display = "none";
+      noBtn.style.display = "";
+      clearInterval(heartInterval);
+      heartInterval = null;
+    }
+  </script>
+
+  <script async src="https://tenor.com/embed.js"></script>
+</body>
+</html>
